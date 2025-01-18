@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beema's Fincon Flowchart Creator</title>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+	<script src="https://cdn.tailwindcss.com"></script>
+    <style>
+		@font-face {
+    font-family: 'Alegreya Sans SC Thin';
+    src: url('AlegreyaSansSC-Thin.ttf') format('truetype'); /* Make sure the filename matches exactly */
+    font-weight: 100; /* Adjust as necessary */
+}
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+		.watermark {
+    font-family: 'Alegreya Sans SC Thin', sans-serif; /* Use Alegreya for the watermark */
+}
+        #flowchart {
+            border: 2px dashed #cbd5e1;
+            padding: 10px;
+            margin: 20px 0;
+            background-color: white;
+        }
+        canvas {
+            display: none;
+        }
+
+
+    </style>
+</head>
+<body class="flex flex-col items-center p-6">
+
+    <h1 class="text-4xl font-bold text-red-600 mb-6">Flowchart Creator</h1>
+    <textarea id="mermaidCode" rows="10" cols="50" class="border-2 rounded p-3 mb-4 w-full max-w-xl">flowchart TD
+A-->B
+B-->C
+C-->D</textarea>
+    <button onclick="renderChart()" class="bg-red-600 text-white py-2 px-6 rounded hover:bg-red-700">Render Flowchart</button>
+
+    <div id="flowchart" class="mt-6 shadow-md"></div>
+	<div class="watermark">Beema's Fincon</div>
+
+    <div class="mt-4 flex items-center">
+        <input type="checkbox" id="watermarkCheckbox" class="form-checkbox text-red-600">
+        <label for="watermarkCheckbox" class="ml-2">Add Watermark</label>
+    </div>
+
+    <button onclick="downloadChart()" class="mt-4 bg-red-600 text-white py-2 px-6 rounded hover:bg-red-700">Download as PNG</button>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            securityLevel: 'loose',
+            theme: 'default'
+        });
+
+        async function renderChart() {
+            const code = document.getElementById('mermaidCode').value;
+            const flowchartDiv = document.getElementById('flowchart');
+            
+            try {
+                const { svg } = await mermaid.render('mermaid-graph', code);
+                flowchartDiv.innerHTML = svg;
+            } catch (error) {
+                console.error('Rendering failed:', error);
+                flowchartDiv.innerHTML = '<p class="text-red-500">Error rendering flowchart. Please check your syntax.</p>';
+            }
+        }
+
+        async function downloadChart() {
+            const flowchartDiv = document.getElementById('flowchart');
+            const svg = flowchartDiv.querySelector('svg');
+
+            if (!svg) {
+                alert("Please render a flowchart first!");
+                return;
+            }
+
+            const watermarkCheckbox = document.getElementById('watermarkCheckbox').checked;
+
+            // A4 dimensions at 300 DPI
+            const A4_WIDTH = 2480;  // 8.27 inches * 300 DPI
+            const A4_HEIGHT = 3508; // 11.69 inches * 300 DPI
+
+            // Create a high-resolution version of the SVG
+            const svgCopy = svg.cloneNode(true);
+            
+            // Get the original SVG dimensions
+            const bbox = svg.getBBox();
+            const viewBox = `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`;
+            svgCopy.setAttribute('viewBox', viewBox);
+            
+            // Set width and height to maintain aspect ratio
+            const scale = Math.min(A4_WIDTH / bbox.width, A4_HEIGHT / bbox.height) * 0.8;
+            svgCopy.setAttribute('width', bbox.width * scale);
+            svgCopy.setAttribute('height', bbox.height * scale);
+
+            // Convert SVG to string with proper scaling
+            const svgData = new XMLSerializer().serializeToString(svgCopy);
+            const canvas = document.createElement('canvas');
+            canvas.width = A4_WIDTH;
+            canvas.height = A4_HEIGHT;
+            const ctx = canvas.getContext('2d');
+
+            // Create image from SVG
+            const img = new Image();
+            img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+
+            img.onload = function() {
+                // Fill white background
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Calculate position to center the image
+                const x = (canvas.width - img.width) / 2;
+                const y = (canvas.height - img.height) / 2;
+
+                // Draw the flowchart
+                ctx.drawImage(img, x, y);
+
+                // Add watermark if checked
+                if (watermarkCheckbox) {
+                    const fontSize = Math.min(canvas.width, canvas.height) * 0.1;
+                    ctx.font = `${fontSize}px "Alegreya Sans SC Thin", sans-serif`;
+                    ctx.fillStyle = 'rgba(174, 171, 171, 0.90)';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText("Beema's Fincon", canvas.width / 2, canvas.height / 2);
+                }
+
+                // Download the image
+                const link = document.createElement('a');
+                link.download = 'flowchart.png';
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+            };
+        }
+
+        // Initial render
+        renderChart();
+    </script>
+
+</body>
+</html>
