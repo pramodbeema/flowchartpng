@@ -15,8 +15,11 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #f0f4f8;
 }
 
 #root {
   min-height: 100vh;
+  min-height: 100dvh;
+  background: #f0f4f8;
 }

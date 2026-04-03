@@ -2,6 +2,14 @@
 
 html {
   overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  background: #f0f4f8;
+  transition: background 0.6s;
+}
+
+body {
+  background: #f0f4f8;
+  transition: background 0.6s;
 }
 
 .app {
@@ -348,6 +356,11 @@ html {
 /* ═══════════════════════════════════════════════════
    DARK THEME
    ═══════════════════════════════════════════════════ */
+
+[data-theme='dark'] html,
+[data-theme='dark'] body {
+  background: #0a0a0c;
+}
 
 [data-theme='dark'] .app::before {
   background: linear-gradient(145deg, #0a0a0c 0%, #000000 50%, #080810 100%);
