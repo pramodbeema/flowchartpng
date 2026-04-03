@@ -1,36 +1,54 @@
-# Beema's Fincon Flowchart Creator 🖊️
+# Beema's Fincon Flowchart Creator
 
-This tool allows you to easily create flowcharts using **Mermaid syntax** 💻 and download them as high-resolution PNG images 📸. Ideal for visualizing business processes, decision-making workflows, or any other flow-based diagrams 🔄.
+A web-based flowchart creator built with React, Vite, Mermaid.js, and html2canvas. Write Mermaid syntax, preview live, and export to polished PNG images.
 
-**Key Features:**
-- **Simple Interface**: Input Mermaid code and instantly render the flowchart ✍️.
-- **Download as PNG**: High-resolution PNG download 🖼️.
-- **Watermark**: Add a customizable watermark ("Beema's Fincon") 💧.
-- **Error Handling**: Automatic error detection 🚫.
-- **TailwindCSS Design**: Sleek and responsive design 📱.
+## Features
 
-### How to Use: 🔧
+- **Mermaid diagram editor** — write flowchart syntax with real-time rendering
+- **Live preview** — instant SVG preview of your diagram
+- **PNG export** — high-quality export with optimized downsampling (2× render → 1× downsample)
+- **Watermark** — optional "Beema's Fincon" watermark on exported images
+- **Light & Dark themes** — Apple-inspired liquid-glass UI with toggle
+- **Responsive** — works on desktop and mobile
 
-1. **Access the Tool:** Open the HTML file in your browser 🌐.
-2. **Input Mermaid Code:** Enter your Mermaid code in the textarea 💻.
-3. **Render the Flowchart:** Click the "Render Flowchart" button 🔄.
-4. **Add Watermark (Optional):** Check the box to add a watermark 💧.
-5. **Download as PNG:** Click the "Download as PNG" button to save the image 📥.
+## Getting Started
 
-### Additional Features:
-- **Mermaid Syntax**: Rendered using [Mermaid.js](https://mermaid-js.github.io/mermaid/) 🌊.
-- **Watermark Customization**: Toggle the watermark before downloading 🌟.
+```bash
+bun install
+bun run dev      # start dev server with HMR
+bun run build    # production build → dist/
+bun run preview  # serve production build
+```
 
-### Installation (Optional): ⚙️
-- Download or clone the repository and open the HTML file in any browser 🌐.
+## Tech Stack
 
-### Technologies Used: 🛠️
-- **Mermaid.js**: Flowchart rendering 🖊️.
-- **TailwindCSS**: Styling 🖌️.
-- **html2canvas**: Capturing and downloading flowcharts 🖼️.
+- React 19 + Vite 8
+- Mermaid.js for diagram rendering
+- html2canvas for image export
+- Tailwind CSS (via CDN)
+- Liquid-glass UI inspired by Apple design language
 
-### Contribution: 🤝
-Feel free to open issues or submit pull requests to contribute 🌟.
+## Project Structure
 
-### Disclaimer: ⚠️
-This tool is for personal use, and the watermark is optional 💧.
+```
+├── src/
+│   ├── App.jsx       # main component (editor, preview, export)
+│   ├── App.css       # liquid-glass styles + themes
+│   ├── index.css     # base styles + fonts
+│   └── main.jsx      # entry point
+├── public/
+│   ├── favicon.svg   # app icon
+│   └── icons.svg     # icon sprites
+├── index.html
+└── package.json
+```
+
+## Export Details
+
+Exported images use a two-step render pipeline:
+1. Diagram rendered at 2× DPI for sharpness
+2. Bilinear downsampling to 1× for smaller file size without quality loss
+3. Diagram fills a white canvas at 95% fit, centered
+4. Optional watermark at 75% width, center-aligned
+
+Made with care by [Pramod Beema](https://github.com/pramodbeema)
