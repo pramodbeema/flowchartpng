@@ -1,8 +1,13 @@
 /* ══ Liquid-Glass (iPhone style) — Light ═══ */
 
+html {
+  overscroll-behavior: none;
+}
+
 .app {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Helvetica Neue', sans-serif;
   color: #1d1d1f;
