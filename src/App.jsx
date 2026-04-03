@@ -29,10 +29,14 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
+    const metaThemeColor = document.getElementById('theme-color-meta');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', dark ? '#0a0a0c' : '#f0f4f8');
+    }
     try {
       localStorage.setItem('theme', theme);
     } catch {}
-  }, [theme]);
+  }, [theme, dark]);
 
   useEffect(() => {
     mermaid.initialize({
