@@ -15,7 +15,7 @@ body {
 .app {
   position: relative;
   width: 100%;
-  height: 100dvh;
+  min-height: 100svh;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -361,7 +361,8 @@ body {
    ═══════════════════════════════════════════════════ */
 
 [data-theme='dark'] html,
-[data-theme='dark'] body {
+[data-theme='dark'] body,
+[data-theme='dark'] #root {
   background: #0a0a0c;
 }
 
