@@ -11,16 +11,28 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-body {
+html, body {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #f0f4f8;
-  overflow: hidden;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  position: fixed;
+  width: 100%;
   height: 100%;
+  height: 100dvh;
+}
+
+body.no-scroll {
+  overscroll-behavior: none !important;
+  -webkit-overflow-scrolling: auto;
 }
 
 #root {
   height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
 }

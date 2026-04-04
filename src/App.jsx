@@ -10,11 +10,38 @@ C-->|No|E[Action 2]
 D-->F[End]
 E-->F`;
 
+function useScrollLock() {
+  useEffect(() => {
+    // Lock the document/body scroll so iOS Safari cannot rubber-band at the
+    // page level. The `.app` element handles all internal scrolling itself.
+    const body = document.body;
+    const html = document.documentElement;
+    body.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.width = '100%';
+
+    // Prevent the body from ever consuming touch-based scroll
+    body.addEventListener('touchmove', (e) => e.preventDefault(), {
+      passive: false,
+    });
+    html.addEventListener('touchmove', (e) => e.preventDefault(), {
+      passive: false,
+    });
+
+    return () => {
+      body.style.overflow = '';
+      body.style.position = '';
+      body.style.width = '';
+    };
+  }, []);
+}
+
 export default function App() {
   const [code, setCode] = useState(DEFAULT_CODE);
   const [watermark, setWatermark] = useState(false);
   const [error, setError] = useState('');
   const [rendering, setRendering] = useState(false);
+  useScrollLock();
   const [dark, setDark] = useState(() => {
     try {
       return localStorage.getItem('theme') === 'dark';
@@ -223,7 +250,7 @@ export default function App() {
         <div className="header-text">
           <h1 className="title-text">Flowchart Creator</h1>
           <p className="subtitle-text">Write Mermaid syntax · Preview · Export to PNG</p>
-          <span className="author-tag">Made with care by&nbsp;Pramod Beema</span>
+          <span className="author-tag">Made with care by Pramod Beema</span>
         </div>
         <div style={{ flex: 1 }} />
         <label className="toggle-label">
