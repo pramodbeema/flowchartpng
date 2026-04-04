@@ -25,13 +25,8 @@ html {
 }
 
 body {
-  /* svh = Small Viewport Height — stays fixed while browser chrome
-     animates in/out on touch. dvh recalculates continuously, which
-     causes the white flash at the bottom when touching the screen. */
-  min-height: 100svh;
+  min-height: 100dvh;
   overscroll-behavior: none;
-  /* Extend background colour behind the home indicator bar (gesture nav).
-     viewport-fit=cover lets us reach that area; this fills it. */
   padding-bottom: env(safe-area-inset-bottom);
 }
 

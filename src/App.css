@@ -21,13 +21,12 @@ body {
 .app {
   position: relative;
   width: 100%;
-  /* svh = Small Viewport Height — fixed value, never recalculates during
-     touch gestures. The original dvh caused the white flash because it
-     continuously resized as the browser chrome animated in/out. */
-  height: 100svh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  /* namesforwu pattern: min-height + dvh is safe — element only grows,
+     never shrinks below viewport. No scroll container created here,
+     body scrolls naturally. */
+  min-height: 100dvh;
+  overflow-x: clip; /* clip (not hidden!) — hidden creates an implicit
+     overflow-y:auto per CSS spec, which kills body-level scroll */
   overscroll-behavior: none;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Helvetica Neue', sans-serif;
   color: #1d1d1f;
