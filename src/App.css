@@ -3,12 +3,18 @@
 html {
   overscroll-behavior: none;
   overscroll-behavior-y: none;
-  background: #f0f4f8;
+  /* Same gradient as .app::before, fixed to viewport — fills any gap
+     below .app when the browser toolbar hides and the viewport grows.
+     background-attachment:fixed anchors the gradient to the screen,
+     not the element, so it's pixel-identical to the fixed ::before. */
+  background: linear-gradient(145deg, #f0f4f8 0%, #f5f5f7 50%, #e8edf2 100%);
+  background-attachment: fixed;
   transition: background 0.6s;
 }
 
 body {
-  background: #f0f4f8;
+  /* Transparent so html's gradient shows through the canvas */
+  background: transparent;
   transition: background 0.6s;
 }
 
@@ -364,10 +370,17 @@ body {
    DARK THEME
    ═══════════════════════════════════════════════════ */
 
-[data-theme='dark'] html,
+/* html[data-theme='dark'] — must target html directly because
+   data-theme is set on documentElement (html itself), so
+   [data-theme='dark'] html would never match (html has no parent). */
+html[data-theme='dark'] {
+  background: linear-gradient(145deg, #0a0a0c 0%, #000000 50%, #080810 100%);
+  background-attachment: fixed;
+}
+
 [data-theme='dark'] body,
 [data-theme='dark'] #root {
-  background: #0a0a0c;
+  background: transparent;
 }
 
 [data-theme='dark'] .app::before {
