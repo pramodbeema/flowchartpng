@@ -17,8 +17,9 @@ body {
   width: 100%;
   min-height: 100svh;
   overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  /* No overflow-y / fixed height — content grows naturally, body scrolls.
+     The ::before pseudo-element (position:fixed;inset:0) keeps the
+     background covering the full viewport at all times. */
   overscroll-behavior: none;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Helvetica Neue', sans-serif;
   color: #1d1d1f;
